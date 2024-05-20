@@ -36,6 +36,10 @@ const flags = {
 		type: [String],
 		description: 'Paths & globs to exclude from being watched',
 	},
+	add: {
+		type: [String],
+		description: 'Paths & globs of additional files to be watched',
+	},
 } as const;
 
 export const watchCommand = command({
@@ -194,8 +198,9 @@ export const watchCommand = command({
 	 *
 	 * As an alternative, we watch cwd and all run-time dependencies
 	 */
+	const pathsToWatch = argv._.concat(argv.flags.add);
 	const watcher = watch(
-		argv._,
+		pathsToWatch,
 		{
 			cwd: process.cwd(),
 			ignoreInitial: true,
